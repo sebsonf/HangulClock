@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -sudo python3 -m pip uninstall pip && sudo apt install python3-pip --reinstall*-
 
 # make_panel.py - make silkscreen for panel of hangulclock
 #
@@ -10,8 +10,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import Image
-import ImageFont, ImageDraw, ImageOps
+from PIL import Image, ImageFont, ImageDraw, ImageOps
 import os
 
 panelString = '''
@@ -22,7 +21,7 @@ panelString = '''
 사오십오분
 '''
 t = ''.join(panelString.split())
-panelChars = list(t.decode('utf-8'))
+panelChars = list(t)
 
 DPI = 300
 cSizeWithMargin = 15 # 20mm for W & H of one character
@@ -33,7 +32,7 @@ panelMarginX = cPix
 panelMarginY = cPix
 panelSize = (cSize+panelMarginX*2, cSize+panelMarginY*2) # 236 == 20mm on 300dpi
 
-print "panelSize =", panelSize
+print("panelSize =", panelSize)
 
 image = Image.new('RGB', panelSize)
 draw = ImageDraw.Draw(image)
@@ -46,16 +45,16 @@ fontPath = r'/usr/share/fonts/truetype/nanum/NanumMyeongjo.ttf'
 fontSize = 0
 for i in range(12, 2000):
     font = ImageFont.truetype(fontPath, i, encoding="unic")
-    text = "한".decode('utf-8')
+    text = "한"
     textSize = font.getsize(text)
     if textSize[0] > cPix or textSize[1] > cPix:
-        print "Font size", textSize, i
+        print("Font size", textSize, i)
         fontSize = i - 10
         break
 
 font = ImageFont.truetype(fontPath, fontSize, encoding="unic")
 
-print "cPix =", cPix
+print("cPix =", cPix)
 for y in range(5):
     for x in range(5):
         panelChar = panelChars[x+(y*5)]
