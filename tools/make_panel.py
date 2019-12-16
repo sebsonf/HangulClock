@@ -26,23 +26,26 @@ panelChars = list(t.decode('utf-8'))
 DPI = 300
 #cSizeWithMargin = 15 # 20mm for W & H of one character
 
-panelSize = 140.0
-panelMargin = 5.0
-cSize = (panelSize - 2*panelMargin) / 5
+panelSizeX = 142.0
+panelSizeY = 140.0
+panelMarginX = 6.0
+panelMarginY = 5.0
+cSize = (panelSizeX - 2*panelMarginX) / 5
 cPix = int((DPI * cSize )/25.4) # 1 inch == 25.4 mm
-panelMarginX = int((DPI * panelMargin)/25.4)
-panelMarginY = panelMarginX
+panelMarginXPix = int((DPI * panelMarginX)/25.4)
+panelMarginYPix = int((DPI * panelMarginY)/25.4)
 
 #cSize = cPix*5
 #panelMarginX = cPix
 #panelMarginY = cPix
 #panelSize = (cSize+panelMarginX*2, cSize+panelMarginY*2) # 236 == 20mm on 300dpi
-panelSizePix = int((DPI * panelSize)/25.4)
+panelSizeXPix = int((DPI * panelSizeX)/25.4)
+panelSizeYPix = int((DPI * panelSizeY)/25.4)
 
 
-print("panelSize [mm]=", panelSize)
+print("panelSize [mm]= [%d, %d]", panelSizeXPix, panelSizeYPix)
 
-image = Image.new('RGB', (panelSizePix, panelSizePix))
+image = Image.new('RGB', (panelSizeXPix, panelSizeYPix))
 draw = ImageDraw.Draw(image)
 
 # The fonts from http://hangeul.naver.com
@@ -70,12 +73,12 @@ for y in range(5):
         xMargin = (cPix - charSize[0])/2
         yMargin = (cPix - charSize[1])/2
         #print panelChar.encode('utf-8'), charSize, xMargin, yMargin
-        draw.text((x*cPix+xMargin+panelMarginX, y*cPix+yMargin+panelMarginY),
+        draw.text((x*cPix+xMargin+panelMarginXPix, y*cPix+yMargin+panelMarginYPix),
                   panelChar, font=font)
 
 # mirror it to toner transfer
-#image = ImageOps.mirror(image)
-image = ImageOps.invert(image)
+image = ImageOps.mirror(image)
+#image = ImageOps.invert(image)
 image.save('panel_%s.png'%os.path.basename(fontPath), dpi=(DPI, DPI))
 
 # vim: et sw=4 fenc=utf-8:
