@@ -21,31 +21,39 @@ panelString = '''
 사오십오분
 '''
 t = ''.join(panelString.split())
-panelChars = list(t)
+panelChars = list(t.decode('utf-8'))
 
 DPI = 300
-cSizeWithMargin = 15 # 20mm for W & H of one character
+#cSizeWithMargin = 15 # 20mm for W & H of one character
 
-cPix = int((DPI * cSizeWithMargin )/25.4) # 1 inch == 25.4 mm
-cSize = cPix*5
-panelMarginX = cPix
-panelMarginY = cPix
-panelSize = (cSize+panelMarginX*2, cSize+panelMarginY*2) # 236 == 20mm on 300dpi
+panelSize = 140.0
+panelMargin = 5.0
+cSize = (panelSize - 2*panelMargin) / 5
+cPix = int((DPI * cSize )/25.4) # 1 inch == 25.4 mm
+panelMarginX = int((DPI * panelMargin)/25.4)
+panelMarginY = panelMarginX
 
-print("panelSize =", panelSize)
+#cSize = cPix*5
+#panelMarginX = cPix
+#panelMarginY = cPix
+#panelSize = (cSize+panelMarginX*2, cSize+panelMarginY*2) # 236 == 20mm on 300dpi
+panelSizePix = int((DPI * panelSize)/25.4)
 
-image = Image.new('RGB', panelSize)
+
+print("panelSize [mm]=", panelSize)
+
+image = Image.new('RGB', (panelSizePix, panelSizePix))
 draw = ImageDraw.Draw(image)
 
 # The fonts from http://hangeul.naver.com
 # I used it via ttf-nanum package of Ubuntu linux
-fontPath = r'/usr/share/fonts/truetype/nanum/NanumMyeongjo.ttf'
+fontPath = r'/usr/share/fonts/truetype/nanum/NanumGothic.ttf'
 
 # To find proper fontsize fited-in given dimention
 fontSize = 0
 for i in range(12, 2000):
     font = ImageFont.truetype(fontPath, i, encoding="unic")
-    text = "한"
+    text = "한".decode('utf-8')
     textSize = font.getsize(text)
     if textSize[0] > cPix or textSize[1] > cPix:
         print("Font size", textSize, i)
@@ -66,7 +74,8 @@ for y in range(5):
                   panelChar, font=font)
 
 # mirror it to toner transfer
-image = ImageOps.mirror(image)
+#image = ImageOps.mirror(image)
+image = ImageOps.invert(image)
 image.save('panel_%s.png'%os.path.basename(fontPath), dpi=(DPI, DPI))
 
 # vim: et sw=4 fenc=utf-8:
