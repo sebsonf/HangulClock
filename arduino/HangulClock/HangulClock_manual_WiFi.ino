@@ -5,8 +5,8 @@
 /****************************************************************** 
  * WIFI 
  ******************************************************************/
-const char* ssid = "Udfret.Ragnarsont";
-const char* pw = "68253114913504835470";
+const char* ssid = "";
+const char* pw = "";
 int connection_idle_counter = 0;
 
 void setupWIFI()
